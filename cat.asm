@@ -7,7 +7,7 @@ section .data
     failed_to_read_file_msg     db     'Failed to read from file!', 10
     failed_to_read_file_msg_len equ    $-failed_to_read_file_msg
 
-    buf_len                     equ    32 * 1024
+    buf_len                     equ    128 * 1024
 
 section .text
 global _start
