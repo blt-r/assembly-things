@@ -14,19 +14,19 @@ global _start
 _start:
     sub rsp, 24              ; allocate local variables
 
-                             ; argv is at              [rsp + 32 + index * 8]
-                             ; argc is at              [rsp + 24]
-                             ; file descriptor is at   [rsp + 16]
-                             ; pointer to buffer is at [rsp + 8]
-                             ; arg offset index        [rsp]
+                             ; argv is already at    [rsp + 32 + index * 8]
+                             ; argc is already at    [rsp + 24]
+                             ; file descriptor       [rsp + 16]
+                             ; pointer to buffer     [rsp + 8]
+                             ; current arg index     [rsp]
 
     ; allocate the buffer
     mov rax, 9               ; syscall number, 9 = mmap
-    mov rdi, 0               ; addr
+    mov rdi, 0               ; addr, 0 = don't care
     mov rsi, buf_len         ; len
     mov rdx, 3               ; prot, 3 = PROT_READ|PROT_WRITE
     mov r10, 34              ; flags, 34 = MAP_PRIVATE|MAP_ANONYMOUS
-    mov r8 , -1              ; fd
+    mov r8 , -1              ; fd, -1 = no file
     mov r9 , 0               ; offset
     syscall
     ; we will assume allocation can't fail
