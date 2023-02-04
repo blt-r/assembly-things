@@ -78,18 +78,18 @@ file_loop_body:
 
     jmp file_loop_body
 file_loop_end:
-    mov rax, 60              ; syscall number, 60 = exit
-    mov rdi, 0               ; exit code
-    syscall
-
+    jmp exit_success
+    
 print_stdin:
     mov rdi, 0               ; file descriptor, 0 = stdin
     mov rsi, [rsp + 8]       ; put pointer to buffer to rsi
     call print_file
 
+exit_success:
     mov rax, 60              ; syscall number, 60 = exit
     mov rdi, 0               ; exit code
     syscall
+
     
 
 
@@ -100,9 +100,7 @@ failed_to_open_file:
     mov rdx, failed_to_open_file_msg_len ; size of the data
     syscall
 
-    mov rax, 60                          ; syscall number, 60 = exit
-    mov rdi, 1                           ; exit code
-    syscall
+    jmp exit_fail
 
 failed_to_read_file:
     mov rax, 1                           ; syscall number, 1 = write
@@ -111,6 +109,7 @@ failed_to_read_file:
     mov rdx, failed_to_read_file_msg_len ; size of the data
     syscall
 
+exit_fail:
     mov rax, 60                          ; syscall number, 60 = exit
     mov rdi, 1                           ; exit code
     syscall
