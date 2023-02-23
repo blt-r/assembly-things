@@ -1,9 +1,10 @@
 # assembly-things
-A couple small assembly programs I wrote in x86_64 assembly for linux
+A couple small assembly programs I wrote in x86_64 assembly for Linux
 
 - `hello_world.asm`: Prints `Hello, World!` to stdout
 - `fizzbuzz.asm`: A FizzBuzz program
 - `cat.asm`: Prints files. Can con***cat***inate multiple files. If there are no arguments, prints from stdin.
+- `is_even.asm`: Exit with 0 or 1 depending on the number provided being even or odd
 
 Build: 
 ```shell
