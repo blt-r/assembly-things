@@ -15,9 +15,8 @@ section .data
 section .text
 global _start
 _start:
-    mov rcx, [rsp]   ; argc is the first thing on the stack
-
-    cmp rcx, 2       ; if we hove not exactly 2 arguments, arguments are wrong
+    mov rcx, [rsp]      ; argc is the first thing on the stack
+    cmp rcx, 2          ; if we hove not exactly 2 arguments, arguments are wrong
     jne bad_args
 
     mov rcx, [rsp + 16] ; argv is at rsp + 8, argv[1] is at rsp + 16, put it in rcx
@@ -27,9 +26,9 @@ _start:
     je bad_args         ; which is bad
 
 loop_body:
-    mov dil, [rcx]  ; put current character into rdi, (dil is lowest byte of rdi)
-    inc rcx         ; increment pointer to argument
-    mov al, [rcx]   ; put next character to rbx
+    mov dil, [rcx]  ; put current character into rdi (dil is lowest byte of rdi)
+    inc rcx         ; increment pointer to argument, so it points to next char
+    mov al, [rcx]   ; put next character to rax
 
     cmp al, 0       ; if next character is null;
     je after_loop   ; break from the loop
@@ -56,8 +55,3 @@ bad_args:
     mov rax, 60      ; syscall number, 60 = exit
     mov rdi, 2       ; exit code
     syscall
-
-
-
-
-
