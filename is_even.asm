@@ -38,7 +38,7 @@ after_loop:
     and rdi, 1       ; look at most significant bit of rdi
                      ; if it is one, the ascii value of character is odd
                      ; if ascii value of digit is odd, that digit is odd
-                     ; now we have 1 in rax if the number is odd, and 0 if it's even
+                     ; now we have 1 in rdi if the number is odd, and 0 if it's even
                      ; that is the exit code we need
                      ; and it is already in rdi where it should be for exit syscall
 
@@ -47,7 +47,7 @@ after_loop:
 
 bad_args:
     mov rax, 1       ; syscall number, 1 = write
-    mov rdi, 1       ; file descriptor, 1 = stdout
+    mov rdi, 2       ; file descriptor, 2 = stderr
     mov rsi, err     ; pointer to data
     mov rdx, err_len ; size of the data
     syscall
