@@ -16,33 +16,35 @@ section .text
 global _start
 _start:
     mov rcx, [rsp]      ; argc is the first thing on the stack
-    cmp rcx, 2          ; if we hove not exactly 2 arguments, arguments are wrong
+    cmp rcx, 2          ; if we have not exactly 2 arguments, arguments are wrong
     jne bad_args
 
     mov rcx, [rsp + 16] ; argv is at rsp + 8, argv[1] is at rsp + 16, put it in rcx
 
-    mov ah, [rcx]       ; put first character in rax
-    cmp ah, 0           ; if argv[1] points to null, the argument is empty
+    mov al, [rcx]       ; put first character in rax
+    cmp al, 0           ; if argv[1] points to null, the argument is empty
     je bad_args         ; which is bad
 
 loop_body:
-    mov dil, [rcx]  ; put current character into rdi (dil is lowest byte of rdi)
-    inc rcx         ; increment pointer to argument, so it points to next char
-    mov al, [rcx]   ; put next character to rax
+    mov dil, al         ; we will store current character in rdi
+                        ; put it in there from rax, where the next character is
 
-    cmp al, 0       ; if next character is null;
-    je after_loop   ; break from the loop
-    jmp loop_body   ; otherwise, continue looping
+    inc rcx             ; increment pointer to argument, so it points to next char
+    mov al, [rcx]       ; put next character to rax
+
+    cmp al, 0           ; if next character is null;
+    je after_loop       ; break from the loop
+    jmp loop_body       ; otherwise, continue looping
 after_loop:
     ; after loop we will have last character of argv[1] in rdi.
-    and rdi, 1       ; look at most significant bit of rdi
-                     ; if it is one, the ascii value of character is odd
-                     ; if ascii value of digit is odd, that digit is odd
-                     ; now we have 1 in rdi if the number is odd, and 0 if it's even
-                     ; that is the exit code we need
-                     ; and it is already in rdi where it should be for exit syscall
+    and rdi, 1   ; look at most significant bit of rdi
+                 ; if it is one, the ascii value of character is odd
+                 ; if ascii value of digit is odd, that digit is odd
+                 ; now we have 1 in rdi if the number is odd, and 0 if it's even
+                 ; that is the exit code we need
+                 ; and it is already in rdi where it should be for exit syscall
 
-    mov rax, 60      ; syscall number, 60 = exit
+    mov rax, 60  ; syscall number, 60 = exit
     syscall
 
 bad_args:
