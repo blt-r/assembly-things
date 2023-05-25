@@ -7,7 +7,7 @@ section .data
     failed_to_read_file_msg     db     'Failed to read from file!', 10
     failed_to_read_file_msg_len equ    $-failed_to_read_file_msg
 
-    buf_len                     equ    128 * 1024
+    buf_size                    equ    128 * 1024
 
 section .text
 global _start
@@ -23,7 +23,7 @@ _start:
     ; allocate the buffer
     mov rax, 9               ; syscall number, 9 = mmap
     mov rdi, 0               ; addr, 0 = don't care
-    mov rsi, buf_len         ; len
+    mov rsi, buf_size        ; size of the buffer
     mov rdx, 3               ; prot, 3 = PROT_READ|PROT_WRITE
     mov r10, 34              ; flags, 34 = MAP_PRIVATE|MAP_ANONYMOUS
     mov r8 , -1              ; fd, -1 = no file
@@ -125,7 +125,7 @@ write_loop_body:
     ; write into the buffer
     mov rax, 0             ; syscall number, 0 = read
     mov rdi, [rsp]         ; file descriptor
-    mov rdx, buf_len       ; length of the buffer
+    mov rdx, buf_size      ; length of the buffer
     ; pointer to buffer is already in rsi
     syscall
 
