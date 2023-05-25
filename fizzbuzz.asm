@@ -129,7 +129,7 @@ pn_loop_body:
     mov [rsp], rax              ; put result back into current number
     add rdx, 48                 ; add 48 to remainder to get ascii code
 
-    add qword [rsp + 8], 1      ; increment the length
+    inc qword [rsp + 8]         ; increment the length
     
     lea rbx, [rsp + 16 + 24]    ; store pointer to end of string in rbx
     sub rbx, [rsp + 8]          ; subtruct length of string to get pointer to beginning
