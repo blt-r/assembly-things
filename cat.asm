@@ -56,7 +56,7 @@ file_loop_body:
     mov rdx, 0               ; mode, we don't create anything, so we don't care
     syscall
 
-    cmp rax, 0               ; if return value less then 0, we faild
+    cmp rax, 0               ; if return value less then 0, `open` failed
     jl failed_to_open_file
 
     mov [rsp + 16], rax      ; put the file descriptor in its place    
@@ -73,17 +73,16 @@ file_loop_body:
     inc qword [rsp]          ; increment argument counter
 
     mov rax, [rsp]           ; put current arg into rax
-    cmp rax, [rsp + 24]      ; compare it with argc    
-    je file_loop_end         ; if it is greater or equal, then stop the loop
+    cmp rax, [rsp + 24]      ; compare it to argc
+    je exit_success          ; if they are equal, stop the loop and exit the program
 
-    jmp file_loop_body
-file_loop_end:
-    jmp exit_success
+    jmp file_loop_body       ; begin the next iteration of the loop
     
 print_stdin:
     mov rdi, 0               ; file descriptor, 0 = stdin
     mov rsi, [rsp + 8]       ; put pointer to buffer to rsi
     call print_file
+    ; after printing the stdin exit the program:
 
 exit_success:
     mov rax, 60              ; syscall number, 60 = exit
