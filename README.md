@@ -1,5 +1,5 @@
 # assembly-things
-A couple of smoll assembly programs I wrote in x86_64 assembly for Linux
+A couple of small programs I wrote in x86_64 assembly for Linux
 
 - `hello_world.asm`: Prints `Hello, World!` to stdout
 - `fizzbuzz.asm`: A FizzBuzz program
