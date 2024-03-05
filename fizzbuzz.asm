@@ -42,6 +42,7 @@ loop_body:
     div rcx              ; result is in rax, remainder is in rdx
     cmp rdx, 0
     je if_divisible_by_3
+
     jmp else_block
 
 if_divisible_by_15:
